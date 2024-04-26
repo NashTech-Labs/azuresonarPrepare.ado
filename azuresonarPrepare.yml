@@ -18,7 +18,7 @@
 
 
     - task: NuGetCommand@2
-      displayName: 'displayName of your project'
+      displayName: ' Build displayName of your project'
       retryCountOnTaskFailure: 2
       inputs:
         feedsToUse: config
@@ -32,7 +32,7 @@
         maximumCpuCount: true
         platform: "Any CPU"
     - task: VSTest@2
-      displayName: 'displayName of your project'
+      displayName: ' Test displayName of your project'
       inputs:
         testSelector: 'testAssemblies'
         testAssemblyVer2: | 
