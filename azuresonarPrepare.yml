@@ -1,0 +1,48 @@
+- template: "(Path of your file) "
+      parameters:
+       sourceLanguage: 'Language of your template'
+       sonarqubeServiceConnection: 'SonarQubeConnection'
+       sonarProjectKey:  'ProjectKey of your project'
+       sonarProjectName: 'ProjectName of your project'
+       dotnetPrepare: true
+       sonarProperties:
+          properties: |
+            sonar.projectVersion= ${{paramaters.Projectsversion}}
+    
+            # Enable the Visual Studio bootstrapper
+            sonar.visualstudio.enable=true
+            sonar.sources='Path of the template'
+            sonar.visualstudio.solution='.sln file path of the template'
+            sonar.dotnet.test.assemblies=  '(Important files to scan)'
+            sonar.exclusions = " (What not to Scan during sonar Analysis has to be mentioned here)
+
+
+    - task: NuGetCommand@2
+      displayName: 'displayName of your project'
+      retryCountOnTaskFailure: 2
+      inputs:
+        feedsToUse: config
+        externalFeedCredentials: SvcEngGhubConnect
+        restoreSolution: '.sln'
+    - task: VSBuild@1
+      displayName: 'displayName'
+      inputs:
+        solution: '.sln'
+        configuration: 'release'
+        maximumCpuCount: true
+        platform: "Any CPU"
+    - task: VSTest@2
+      displayName: 'displayName of your project'
+      inputs:
+        testSelector: 'testAssemblies'
+        testAssemblyVer2: | 
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+        codeCoverageEnabled: true
+
+    - template: ' path of the Sonar ' for eg - .yml@sonar
+      parameters:
+        sourceLanguage: 'Language of the Template'
+        dotnetPrepare: false
+        jdkVersion: For ex- 'JAVA_HOME_11_X64'
+        publishResults: false
+        checkQualityGateStatus: false
